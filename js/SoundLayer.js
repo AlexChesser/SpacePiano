@@ -13,6 +13,25 @@ window.onload = function(){
 			MIDI.noteOff(0, note, delay + 0.75);
 			*/
 			window.piano = MIDI;
+	        window.controller = new Leap.Controller();
+			window.currentframe = 0;
+			controller.on('frame', function(frame) {
+			  // your code here
+			  currentframe++
+		      if(frame.hands.length > 0 && currentframe % 60 == 0)
+		      {
+				  for (var i = 0; i < frame.hands.length; i++){
+			          var hand = frame.hands[i];
+			          var position = hand.palmPosition;
+			          var velocity = hand.palmVelocity;
+			          var direction = hand.direction;
+					  console.log(position);
+					  piano.noteOn(0, position, velocity, 0);
+				  }
+			  }
+			});
+
+			window.controller.connect();
 		}
 	})
 }
