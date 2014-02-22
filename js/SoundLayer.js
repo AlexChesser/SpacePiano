@@ -1,11 +1,18 @@
-var SoundLayer = {
-	init : function(){
-
-
-		MIDI.loadPlugin(function() {
-			MIDI.noteOn(0, 100, 127, 0); // plays note once loaded
-		}, "MIDI.js/soundfont/acoustic_grand_piano-ogg.js");
-	}
-	
-	
+window.onload = function(){
+	MIDI.loadPlugin({
+		soundfontUrl: "./MIDI.js/soundfont/",
+		instrument: "acoustic_grand_piano",
+		callback: function() {
+			/*
+			var delay = 0; // play one note every quarter second
+			var note = 50; // the MIDI note
+			var velocity = 127; // how hard the note hits
+			// play the note
+			MIDI.setVolume(0, 127);
+			MIDI.noteOn(0, note, velocity, delay);
+			MIDI.noteOff(0, note, delay + 0.75);
+			*/
+			window.piano = MIDI;
+		}
+	})
 }
