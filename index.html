@@ -8,13 +8,20 @@
         <script src="js/leap.js"></script>
         <script src="js/midi.js"></script>
         <script src="js/three.js"></script>
+        <script src="js/spacepiano.three.js"></script>
     </head>
     <body>
         <div id="container"></div>
         <script>
             $(function () {
-
+                spacepiano.three.init();
+                window.requestAnimationFrame(tick);
             })
+
+            function tick() {
+                spacepiano.three.update();
+                window.requestAnimationFrame(tick);
+            }
         </script>
     </body>
 </html>
