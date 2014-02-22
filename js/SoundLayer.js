@@ -21,7 +21,7 @@ window.onload = function(){
 			controller.on('frame', function(frame) {
 			  // your code here
 			  currentframe++
-		      if(frame.hands.length > 0 && currentframe % 10 == 0)
+		      if(frame.hands.length > 0 && currentframe % 5 == 0)
 		      {
 				  currentframe = 0;
 				  for (var i = 0; i < frame.hands.length; i++){
@@ -37,7 +37,7 @@ window.onload = function(){
 					  // between roughly 20 and ... more. 
 					  note = Math.round(note * 100+20,0);
 					  console.log(note);					  
-					  piano.noteOn(0, note, 512, 0);
+					  piano.noteOn(0, note, 127, 0);
 				  }
 			  }
 			  
