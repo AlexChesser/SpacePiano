@@ -6,9 +6,21 @@
         <title>Space Piano</title>
         <script src="js/jquery-2.1.0.min.js"></script>
         <script src="js/leap.js"></script>
-        <script src="js/midi.js"></script>
         <script src="js/three.js"></script>
         <script src="js/spacepiano.three.js"></script>
+		<!--  Stolen wholesale from the MIDI.js demo-Basic.html file -->
+	    	<script src="./js/MIDI/AudioDetect.js" type="text/javascript"></script>
+	    	<script src="./js/MIDI/LoadPlugin.js" type="text/javascript"></script>
+	    	<script src="./js/MIDI/Plugin.js" type="text/javascript"></script>
+	    	<script src="./js/MIDI/Player.js" type="text/javascript"></script>
+	    	<script src="./js/Window/DOMLoader.XMLHttp.js" type="text/javascript"></script>
+	    	<!-- extras -->
+	    	<script src="./inc/Base64.js" type="text/javascript"></script>
+	    	<script src="./inc/base64binary.js" type="text/javascript"></script>		
+		<!--  END: demo-Basic.html rip off code :) thanks to the original author -->
+        <script src="js/SoundLayer.js"></script>
+		
+		
     </head>
     <body>
         <div id="container"></div>
@@ -23,5 +35,7 @@
                 window.requestAnimationFrame(tick);
             }
         </script>
+		
+		space piano :) 
     </body>
 </html>
