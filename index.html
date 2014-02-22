@@ -70,7 +70,9 @@
                   if (normalizedPosition[1] < 0.5 + KEYTOUCH_THRESHOLD &&
                       normalizedPosition[1] > 0.5 - KEYTOUCH_THRESHOLD) {
                       var key = findKey(normalizedPosition);
+                      
                       if (key) {
+                          key.setVelocity(interactionBox.normalizePoint(pointable.tipVelocity, true)[1]);
                           resultList.push(key);
                       }
                   }
@@ -100,6 +102,9 @@
                   printKey: function () {
                       return "note: " + _keyIndex + "<br />" + "isWhite: " + _isWhite +
                   "<br />" + _velocity + "<br />";
+                  },
+                  setVelocity: function (velocity) {
+                      _velocity = velocity;
                   }
               }
           }
