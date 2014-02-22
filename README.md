@@ -13,6 +13,15 @@ Overall structure of the program is divided into three main parts within a basic
 2.  A hand tracking visualization based on the code by Roman Liutikov https://labs.leapmotion.com/author/romanliutikov/ (though Lester Says he's just going to steal the mesh)
 3.  A visualization using something from https://github.com/mrdoob/three.js/
   
+TO RUN:
+
+first initialize the submodules
+
+git submodule init
+git submodule update
+
+
+
 Built by the team:
 
 Lester Sy
