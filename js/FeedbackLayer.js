@@ -1,6 +1,7 @@
 var FedbackLayer = {
 	update: function(obj){
 		// clear last frame
+		/*
 		var canvas = this.canvas,
 			ctx = this.ctx;		
 		ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
@@ -18,12 +19,13 @@ var FedbackLayer = {
 			ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
 			ctx.fill();
 		}
+		*/
 	},
 	canvas : {},
 	// create a rendering context
 	ctx : {},	
 	init : function(){
-		// fullscreen
+		/* fullscreen
 		var canvas = this.canvas,
 			ctx = this.ctx;
 		
@@ -35,7 +37,8 @@ var FedbackLayer = {
 		ctx.fillStyle = "rgba(0,0,0,0.7)";		
 		this.canvas = canvas;
 		this.ctx = ctx;
+
+		*/
 		loadLayout();
-		
 	}
 }

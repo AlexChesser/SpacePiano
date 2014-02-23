@@ -5,7 +5,12 @@ var changeInstrument = function(){
 		callback: function() {
 			window.piano = MIDI;
 			
-			piano.programChange(0,  $("#instrument option:selected").val());
+			// actually, now that we're using up to 14 pointers, maybe we need to 
+			// update all channels when we change the instrument.
+			// unless we actually want to have a mix of instruments .. ooooh 
+			for(var i = 0; i < 14; i++) {
+				piano.programChange(i,  $("#instrument option:selected").val());
+			}
 			FedbackLayer.init();
 			window.controller = new Leap.Controller();
 			var currentframe = 0;
@@ -13,9 +18,9 @@ var changeInstrument = function(){
 			
 			controller.on('frame', function(frame) {
 			  currentframe++;
-		      if(currentframe % 5 == 0){
+		      if(currentframe % $("#playspeed").val() == 0){
 					currentframe = 0;
-					KeysLayer.PlayKeys(frame)
+					KeysLayer.SimplePlayFingers(frame)
 					FedbackLayer.update(frame);
 			  }
 			});
