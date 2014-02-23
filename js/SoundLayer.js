@@ -12,6 +12,7 @@ window.onload = function(){
 		      if(currentframe % 5 == 0){
 					currentframe = 0;
 					KeysLayer.PlayKeys(frame)
+					FedbackLayer.update(frame);
 			  }
 			});
 			window.controller.connect();
