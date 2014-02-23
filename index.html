@@ -8,7 +8,10 @@
         <script src="js/leap.js"></script>
         <script src="js/Three_r46.js"></script>
 		<script src="/js/Detector.js"></script>
-		
+		<style>
+html, body { width: 100%; height: 100%; margin: 0; padding: 0}
+#leap-overlay { position: fixed; top: 0; left: 0;}
+</style>
 <script>
 	
 // stats.js - http://github.com/mrdoob/stats.js
@@ -42,7 +45,7 @@ a+"px",m=b,r=0);return b},update:function(){l=this.end()}}};
 		
     </head>
     <body>
-
+<canvas id="leap-overlay"></canvas>
 	<div id="p-wrapper">
 	<ul id="piano">
 		<li><div class="anchor"></div></li>
@@ -64,10 +67,40 @@ a+"px",m=b,r=0);return b},update:function(){l=this.end()}}};
 <div id="f1" class="fingerpoint"></div>
 <div class="fingerpoint"></div>
 <div id="result"></div>
+<script>
+var canvas = document.getElementById("leap-overlay");
 
-		
-        <script>
+// fullscreen
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-        </script>
+// create a rendering context
+var ctx = canvas.getContext("2d");
+ctx.translate(canvas.width/2,canvas.height);
+ctx.fillStyle = "rgba(0,0,0,0.7)";
+
+// render each frame
+function draw(obj) {
+  // clear last frame
+  ctx.clearRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
+
+  // render circles based on pointable positions
+  var pointablesMap = obj.pointablesMap;
+  for (var i in pointablesMap) {
+    // get the pointable's position
+    var pointable = pointablesMap[i];
+    var pos = pointable.tipPosition;
+
+    // create a circle for each pointable
+    var radius = Math.min(600/Math.abs(pos[2]),20);
+    ctx.beginPath();
+    ctx.arc(pos[0]-radius/2,-pos[1]-radius/2,radius,0,2*Math.PI);
+    ctx.fill();
+  }
+};
+
+// listen to Leap Motion
+Leap.loop(draw);
+</script>
     </body>
 </html>
