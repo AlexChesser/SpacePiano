@@ -1,22 +1,19 @@
 
-function KeyTouch(isWhite, keyIndex, velocity) {
+function KeyTouch(isWhite, keyIndex, height) {
         var _keyIndex = keyIndex;
         var _isWhite = isWhite;
-        var _velocity = velocity;
+        var _height = height;
 
         return {
             printKey: function () {
                 return "note: " + _keyIndex + "<br />" + "isWhite: " + _isWhite +
-            "<br />" + _velocity + "<br />";
-            },
-            setVelocity: function (velocity) {
-                _velocity = velocity;
+            "<br />" + _height + "<br />";
             },
             getKeyIndex: function() {
                 return _keyIndex;
             },
-            getVelocity: function() {
-                return _velocity;
+            getHeight: function() {
+                return _height;
             },
             isWhite: function() {
                 return _isWhite;
@@ -38,14 +35,10 @@ var KeysLayer = {
         for (var i = 0, pointable; pointable = pointables[i++]; ) {
             var interactionBox = frame.interactionBox;
             var normalizedPosition = interactionBox.normalizePoint(pointable.tipPosition, true);
-            if (normalizedPosition[1] < 0.5 + this.KEYTOUCH_THRESHOLD &&
-                normalizedPosition[1] > 0.5 - this.KEYTOUCH_THRESHOLD) {
-                var key = this.findKey(normalizedPosition);
+            var key = this.findKey(normalizedPosition);
                 
-                if (key) {
-                    key.setVelocity(interactionBox.normalizePoint(pointable.tipVelocity, true)[1]);
-                    resultList.push(key);
-                }
+            if (key) {
+                resultList.push(key);
             }
             
             var mouseEvent = { clientX: $(window).width() * normalizedPosition[0], clientY: $(window).height() * normalizedPosition[2] };
@@ -57,12 +50,12 @@ var KeysLayer = {
 	findKey : function(pos) {
         var xIndex = Math.floor((pos[0] - this.OVERALL_BORDER) / this.KEY_WIDTH());
         if (pos[2] > 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER) {
-            return new KeyTouch(true, xIndex, 0);
+            return new KeyTouch(true, xIndex, pos[1]);
         }
 
         if (pos[2] < 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER
               && xIndex % 7 != 2 && xIndex % 7 != 6) {
-            return new KeyTouch(false, xIndex, 0);
+            return new KeyTouch(false, xIndex, pos[1]);
         }
     },
     numberOfSkippedBlackKeys : function(index) {
@@ -80,12 +73,10 @@ var KeysLayer = {
 
 	    var keyList = this.getAllTouchedKeys(frame);
 	    for (var i = 0; i < keyList.length; i++) {
-            if (keyList[i].getVelocity() < 0.5 && keyList[i].getVelocity() > 0) {
-                if (keyList[i].isWhite()) {
-			        piano.noteOn(0, this.whiteKeyIndexToNote(keyList[i].getKeyIndex()), (keyList[i].getVelocity() * 2) * 127, 0);
-                } else {
-                    piano.noteOn(0, this.blackKeyIndexToNote(keyList[i].getKeyIndex()), (keyList[i].getVelocity() * 2) * 127, 0);
-                }
+            if (keyList[i].isWhite()) {
+			    piano.noteOn(0, this.whiteKeyIndexToNote(keyList[i].getKeyIndex()), (1 - keyList[i].getHeight()) * 127, 0);
+            } else {
+                piano.noteOn(0, this.blackKeyIndexToNote(keyList[i].getKeyIndex()), (1 - keyList[i].getHeight()) * 127, 0);
             }
 	    }	
 	}
