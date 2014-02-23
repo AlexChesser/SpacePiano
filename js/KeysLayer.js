@@ -19,11 +19,9 @@ var KeysLayer = {
                 }
             }
         }
-		console.log(resultList)
         return resultList;
     },
 	findKey : function(pos) {
-		console.log(pos)
         var xIndex = Math.floor((pos[0] - this.OVERALL_BORDER) / this.KEY_WIDTH);
         if (pos[2] > 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER) {
             return new KeyTouch(true, xIndex, 0);
@@ -57,10 +55,10 @@ var KeysLayer = {
 	    var pointableString = "";
 
 	    var keyList = this.getAllTouchedKeys(frame);
-				
+
 	    for (var i = 0; i < keyList.length; i++) {
 	        pointableString += keyList[i].printKey();
-			
+			//piano.noteOn(0, note, 127, 0);
 
 	
 	    }
