@@ -35,8 +35,9 @@ window.onload = function(){
 					  // the piano appears to start making noise at note #20 
 					  // i don't know how that maps on to anything but we want to normalize to a number 
 					  // between roughly 20 and ... more. 
-					  note = Math.round(note * 100+20,0);				  
-					  piano.noteOn(0, note, 127, 0);
+					  note = Math.round(note * 100+20,0);
+					  KeysLayer.PlayKeys(frame)
+					  //piano.noteOn(0, note, 127, 0);
 				  }
 			  }
 			  
