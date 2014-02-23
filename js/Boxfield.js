@@ -5,6 +5,7 @@ var scene, camera, light, renderer;
 var geometry, material;
 var mouse, projector, ray, intersects = [];
 var stats;
+var pSystem, pSystem2;
 
 function onDocumentMouseMove( event ) {
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -14,6 +15,15 @@ function onDocumentMouseMove( event ) {
 	ray.direction.subSelf( camera.position ).normalize();
 
 	intersects = ray.intersectObject( plane );
+    var point = intersects[0].point;
+	console.log(intersects[0].point);
+
+    pSystem.position.x = point.x;
+    pSystem.position.z = point.z;
+    pSystem.position.y = 48;
+    pSystem2.position.x = point.x;
+    pSystem2.position.z = point.z;
+    pSystem2.position.y = 48;
 }
 
 var BoxField = function () {
@@ -122,6 +132,37 @@ var BoxField = function () {
         projector = new THREE.Projector();
         ray = new THREE.Ray(camera.position);
 
+        var particleCount = 900,
+        particles = new THREE.Geometry(),
+        pMaterial = new THREE.ParticleBasicMaterial({
+            color: 0x00FFFF,
+            size: 8,
+            map: THREE.ImageUtils.loadTexture('/images/particle.png'),
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+        pMaterial2 = new THREE.ParticleBasicMaterial({
+            color: 0xFF00FF,
+            size: 8,
+            map: THREE.ImageUtils.loadTexture('/images/particle.png'),
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+        for (var p = 0; p < particleCount; ++p) {
+            var pX = Math.random() * 100 - 50,
+            pY = Math.random() * 100 - 50,
+            pZ = Math.random() * 100 - 50,
+            particle = new THREE.Vertex(
+                new THREE.Vector3(pX, pY, pZ)
+            );
+            particles.vertices.push(particle);
+        }
+
+        pSystem = new THREE.ParticleSystem(particles, pMaterial);
+        pSystem2 = new THREE.ParticleSystem(particles, pMaterial2);
+        scene.add(pSystem);
+        scene.add(pSystem2);
+
         //document.addEventListener( 'mousemove', onDocumentMouseMove, false );
     }
 
@@ -132,6 +173,7 @@ var BoxField = function () {
     }
 
     function render() {
+
         if (intersects.length) {
             var point = intersects[0].point;
             var x = Math.floor(point.x / size);
@@ -201,9 +243,12 @@ var BoxField = function () {
         // update grid
 
         for (var i = 0, l = res * res; i < l; i++) {
-
             grid[i].scale.y += (Math.max(0.1, 0.1 + buffer2[i]) - grid[i].scale.y) * 0.1;
+        }
 
+        if (pSystem && pSystem2) {
+            pSystem.rotation.y += 0.02;
+            pSystem2.rotation.y -= 0.02;
         }
 
         renderer.render(scene, camera);
