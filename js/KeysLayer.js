@@ -14,12 +14,15 @@ function KeyTouch(isWhite, keyIndex, velocity) {
             },
             getKeyIndex: function() {
                 return _keyIndex;
+            },
+            getVelocity: function() {
+                return _velocity;
             }
         }
     }
 
 var KeysLayer = {
-	WHITEKEY_NUMBER : 14,
+	WHITEKEY_NUMBER : 7,
     OVERALL_BORDER : 0.02,
     BASE_NOTE_INDEX: 60,
     KEY_WIDTH : function() {
@@ -61,7 +64,9 @@ var KeysLayer = {
 
 	    var keyList = this.getAllTouchedKeys(frame);
 	    for (var i = 0; i < keyList.length; i++) {
-			piano.noteOn(0, this.BASE_NOTE_INDEX + keyList[i].getKeyIndex(), 127, 0);
+            if (keyList[i].getVelocity() > 0.5) {
+			    piano.noteOn(0, this.BASE_NOTE_INDEX + keyList[i].getKeyIndex(), 127, 0);
+            }
 	    }	
 	}
 }
