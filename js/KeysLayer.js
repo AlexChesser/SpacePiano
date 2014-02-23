@@ -24,12 +24,12 @@ var KeysLayer = {
 	findKey : function(pos) {
         var xIndex = Math.floor((pos[0] - this.OVERALL_BORDER) / this.KEY_WIDTH);
         if (pos[2] > 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER) {
-            return new KeyTouch(true, xIndex, 0);
+            return new this.KeyTouch(true, xIndex, 0);
         }
 
         if (pos[2] < 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER
               && xIndex % 7 != 2 && xIndex % 7 != 6) {
-            return new KeyTouch(false, xIndex, 0);
+            return new this.KeyTouch(false, xIndex, 0);
         }
     },
     KeyTouch : function(isWhite, keyIndex, velocity) {
