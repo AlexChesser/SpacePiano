@@ -40,7 +40,52 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 		
     </head>
     <body>
-		<div >
+		<select id="instrument" name="inst" style="position: absolute">
+			<option value="trumpet">trumpet</option>
+			<option value="tubular_bells">tubular_bells</option>
+			<option value="vibraphone">vibraphone</option>
+			<option value="marimba">marimba</option>
+			<option value="melodic_tom">melodic_tom</option>
+			<option value="music_box">music_box</option>
+			<option value="pad_6_metallic">pad_6_metallic</option>
+			<option value="seashore">seashore</option>
+			<option value="shamisen">shamisen</option>
+			<option value="shanai">shanai</option>
+			<option value="sitar">sitar</option>
+			<option value="slap_bass_1">slap_bass_1</option>
+			<option value="lead_8_bass__lead">lead_8_bass__lead</option>
+			<option value="overdriven_guitar">overdriven_guitar</option>
+			<option value="pad_3_polysynth">pad_3_polysynth</option>
+			<option value="pad_4_choir">pad_4_choir</option>
+			<option value="pad_5_bowed">pad_5_bowed</option>
+			<option value="percussive_organ">percussive_organ</option>
+			<option value="reed_organ">reed_organ</option>
+			<option value="reverse_cymbal">reverse_cymbal</option>
+			<option value="shakuhachi">shakuhachi</option>
+			<option value="slap_bass_2">slap_bass_2</option>
+			<option value="soprano_sax">soprano_sax</option>
+			<option value="steel_drums">steel_drums</option>
+			<option value="synth_bass_1">synth_bass_1</option>
+			<option value="synth_bass_2">synth_bass_2</option>
+			<option value="synth_brass_2">synth_brass_2</option>
+			<option value="synth_choir">synth_choir</option>
+			<option value="synth_drum">synth_drum</option>
+			<option value="synth_strings_1">synth_strings_1</option>
+			<option value="synth_strings_2">synth_strings_2</option>
+			<option value="taiko_drum">taiko_drum</option>
+			<option value="telephone_ring">telephone_ring</option>
+			<option value="tenor_sax">tenor_sax</option>
+			<option value="timpani">timpani</option>
+			<option value="trombone">trombone</option>
+			<option value="tuba">tuba</option>
+			<option value="viola">viola</option>
+			<option value="violin">violin</option>
+			<option value="voice_oohs">voice_oohs</option>
+			<option value="whistle">whistle</option>
+			<option value="woodblock">woodblock</option>
+			<option value="xylophone">xylophone</option>		
+		</select>
+		<div style="display:none;">
 			<canvas id="leap-overlay"></canvas>
 			<div id="p-wrapper">
 				<ul id="piano">
@@ -66,7 +111,6 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 
 
 // listen to Leap Motion
-FedbackLayer.init();
 </script>
     </body>
 </html>

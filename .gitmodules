@@ -7,3 +7,6 @@
 [submodule "leapjs"]
 	path = leapjs
 	url = git@github.com:leapmotion/leapjs.git
+[submodule "midi-js-soundfonts"]
+	path = midi-js-soundfonts
+	url = git@github.com:gleitz/midi-js-soundfonts.git

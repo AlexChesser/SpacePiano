@@ -1,30 +1,7 @@
-
-function KeyTouch(isWhite, keyIndex, height) {
-        var _keyIndex = keyIndex;
-        var _isWhite = isWhite;
-        var _height = height;
-
-        return {
-            printKey: function () {
-                return "note: " + _keyIndex + "<br />" + "isWhite: " + _isWhite +
-            "<br />" + _height + "<br />";
-            },
-            getKeyIndex: function() {
-                return _keyIndex;
-            },
-            getHeight: function() {
-                return _height;
-            },
-            isWhite: function() {
-                return _isWhite;
-            }
-        }
-    }
-
 var KeysLayer = {
-	WHITEKEY_NUMBER : 10,
+	WHITEKEY_NUMBER : 108,
     OVERALL_BORDER : 0,
-    BASE_NOTE_INDEX: 48,
+    BASE_NOTE_INDEX: 21,
     KEY_WIDTH : function() {
             return (1 - 2 * this.OVERALL_BORDER) / this.WHITEKEY_NUMBER;
         },
@@ -47,15 +24,36 @@ var KeysLayer = {
         
         return resultList;
     },
+	KeyTouch: function(isWhite, keyIndex, height) {
+	        var _keyIndex = keyIndex;
+	        var _isWhite = isWhite;
+	        var _height = height;
+
+	        return {
+	            printKey: function () {
+	                return "note: " + _keyIndex + "<br />" + "isWhite: " + _isWhite +
+	            "<br />" + _height + "<br />";
+	            },
+	            getKeyIndex: function() {
+	                return _keyIndex;
+	            },
+	            getHeight: function() {
+	                return _height;
+	            },
+	            isWhite: function() {
+	                return _isWhite;
+	            }
+	        }
+	    },	
 	findKey : function(pos) {
         var xIndex = Math.floor((pos[0] - this.OVERALL_BORDER) / this.KEY_WIDTH());
         if (pos[2] > 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER) {
-            return new KeyTouch(true, xIndex, pos[1]);
+            return new this.KeyTouch(true, xIndex, pos[1]);
         }
 
         if (pos[2] < 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER
               && xIndex % 7 != 2 && xIndex % 7 != 6) {
-            return new KeyTouch(false, xIndex, pos[1]);
+            return new this.KeyTouch(false, xIndex, pos[1]);
         }
     },
     numberOfSkippedBlackKeys : function(index) {
