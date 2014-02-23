@@ -35,6 +35,7 @@ var FedbackLayer = {
 		ctx.fillStyle = "rgba(0,0,0,0.7)";		
 		this.canvas = canvas;
 		this.ctx = ctx;
+		loadLayout();
 		
 	}
 }
