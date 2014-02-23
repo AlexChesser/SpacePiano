@@ -1,4 +1,4 @@
-var SynthLayer = {
+var KeysLayer = {
 	WHITEKEY_NUMBER : 14,
     OVERALL_BORDER : 0.02,
     KEY_WIDTH : (1 - 2 * this.OVERALL_BORDER) / this.WHITEKEY_NUMBER,
@@ -6,13 +6,12 @@ var SynthLayer = {
     getAllTouchedKeys: function(frame) {
         var resultList = [];
         var pointables = frame.pointables;
-
         for (var i = 0, pointable; pointable = pointables[i++]; ) {
             var interactionBox = frame.interactionBox;
             var normalizedPosition = interactionBox.normalizePoint(pointable.tipPosition, true);
             if (normalizedPosition[1] < 0.5 + this.KEYTOUCH_THRESHOLD &&
                 normalizedPosition[1] > 0.5 - this.KEYTOUCH_THRESHOLD) {
-                var key = findKey(normalizedPosition);
+                var key = this.findKey(normalizedPosition);
                 
                 if (key) {
                     key.setVelocity(interactionBox.normalizePoint(pointable.tipVelocity, true)[1]);
@@ -23,7 +22,6 @@ var SynthLayer = {
         return resultList;
     },
 	findKey : function(pos) {
-
         var xIndex = Math.floor((pos[0] - this.OVERALL_BORDER) / this.KEY_WIDTH);
         if (pos[2] > 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER) {
             return new KeyTouch(true, xIndex, 0);
@@ -48,20 +46,23 @@ var SynthLayer = {
                 _velocity = velocity;
             }
         }
-    }
+    },
+	PlayKeys: function(frame){
+	    var hands = frame.hands;
+	    var pointables = frame.pointables;
+
+	    var pointableOutput = document.getElementById("result");
+	    var pointableString = "";
+
+	    var keyList = this.getAllTouchedKeys(frame);
+
+	    for (var i = 0; i < keyList.length; i++) {
+	        pointableString += keyList[i].printKey();
+			//piano.noteOn(0, note, 127, 0);
+
+	
+	    }
+		
+		
+	}
 }
-Leap.loop(function (frame) {
-
-    var hands = frame.hands;
-    var pointables = frame.pointables;
-
-    var pointableOutput = document.getElementById("result");
-    var pointableString = "";
-
-    var keyList = SynthLayer.getAllTouchedKeys(frame);
-
-    for (var i = 0; i < keyList.length; i++) {
-        pointableString += keyList[i].printKey();
-    }
-    //pointableOutput.innerHTML = pointableString;
-});
