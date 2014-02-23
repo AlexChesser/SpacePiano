@@ -1,15 +1,15 @@
-window.onload = function(){
+var changeInstrument = function(){
 	MIDI.loadPlugin({
 		soundfontUrl: "./midi-js-soundfonts/FluidR3_GM/",
-		instrument: "fx_7_echoes",
+		instrument: $("#instrument option:selected").text(),
 		callback: function() {
 			window.piano = MIDI;
-			piano.programChange(0, 102);
+			
+			piano.programChange(0,  $("#instrument option:selected").val());
 			FedbackLayer.init();
 			window.controller = new Leap.Controller();
 			var currentframe = 0;
 			MIDI.setVolume(0, 127);
-			MIDI.noteOn(0, 108, 127, 0);
 			
 			controller.on('frame', function(frame) {
 			  currentframe++;
@@ -21,6 +21,10 @@ window.onload = function(){
 			});
 			window.controller.connect();
 		}
-	})
+	})	
+}
+
+window.onload = function(){
 	BoxField();
+	changeInstrument()
 }
