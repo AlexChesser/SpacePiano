@@ -28,7 +28,7 @@ var KeysLayer = {
     KEY_WIDTH : function() {
             return (1 - 2 * this.OVERALL_BORDER) / this.WHITEKEY_NUMBER;
         },
-    KEYTOUCH_THRESHOLD : 0.55,
+    KEYTOUCH_THRESHOLD : 0.1,
     getAllTouchedKeys: function(frame) {
         var resultList = [];
         var pointables = frame.pointables;
@@ -64,8 +64,8 @@ var KeysLayer = {
 
 	    var keyList = this.getAllTouchedKeys(frame);
 	    for (var i = 0; i < keyList.length; i++) {
-            if (keyList[i].getVelocity() < 0.5 && keyList[i].getVelocity() > 0) {
-			    piano.noteOn(0, this.BASE_NOTE_INDEX + keyList[i].getKeyIndex(), (keyList[i].getVelocity() + 0.5) * 127, 0);
+            if (keyList[i].getVelocity() < 0.3 && keyList[i].getVelocity() > 0) {
+			    piano.noteOn(0, this.BASE_NOTE_INDEX + keyList[i].getKeyIndex(), (keyList[i].getVelocity() * 3.3) * 127, 0);
             }
 	    }	
 	}
