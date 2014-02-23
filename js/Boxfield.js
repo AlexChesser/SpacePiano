@@ -1,11 +1,24 @@
+var size = 10, res = 50, sizeres = size * res, halfsizeres = sizeres / 2;
+var buffer1 = [], buffer2 = [], temp;
+var grid = [], plane;
+var scene, camera, light, renderer;
+var geometry, material;
+var mouse, projector, ray, intersects = [];
+var stats;
+
+function onDocumentMouseMove( event ) {
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+	ray.direction = projector.unprojectVector( mouse.clone(), camera );
+	ray.direction.subSelf( camera.position ).normalize();
+
+	intersects = ray.intersectObject( plane );
+
+}
+
 var BoxField = function(){ 
-		var size = 10, res = 50, sizeres = size * res, halfsizeres = sizeres / 2;
-			var buffer1 = [], buffer2 = [], temp;
-			var grid = [], plane;
-			var scene, camera, light, renderer;
-			var geometry, material;
-			var mouse, projector, ray, intersects = [];
-			var stats;
+		
 
 			if ( Detector.webgl ) {
 
@@ -104,21 +117,11 @@ var BoxField = function(){
 				projector = new THREE.Projector();
 				ray = new THREE.Ray( camera.position );
 
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
 			}
 
-			function onDocumentMouseMove( event ) {
-
-				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-				ray.direction = projector.unprojectVector( mouse.clone(), camera );
-				ray.direction.subSelf( camera.position ).normalize();
-
-				intersects = ray.intersectObject( plane );
-
-			}
+			
 
 			function animate() {
 
