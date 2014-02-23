@@ -17,18 +17,21 @@ function KeyTouch(isWhite, keyIndex, velocity) {
             },
             getVelocity: function() {
                 return _velocity;
+            },
+            isWhite: function() {
+                return _isWhite;
             }
         }
     }
 
 var KeysLayer = {
-	WHITEKEY_NUMBER : 14,
+	WHITEKEY_NUMBER : 10,
     OVERALL_BORDER : 0,
-    BASE_NOTE_INDEX: 50,
+    BASE_NOTE_INDEX: 48,
     KEY_WIDTH : function() {
             return (1 - 2 * this.OVERALL_BORDER) / this.WHITEKEY_NUMBER;
         },
-    KEYTOUCH_THRESHOLD : 0.1,
+    KEYTOUCH_THRESHOLD : 0.2,
     getAllTouchedKeys: function(frame) {
         var resultList = [];
         var pointables = frame.pointables;
@@ -62,14 +65,27 @@ var KeysLayer = {
             return new KeyTouch(false, xIndex, 0);
         }
     },
+    numberOfSkippedBlackKeys : function(index) {
+       return Math.floor(index / 7) + Math.floor((index % 7) / 3);
+    },
+    whiteKeyIndexToNote : function(index) {
+        return this.BASE_NOTE_INDEX + 2 * index - this.numberOfSkippedBlackKeys(index);
+    },
+    blackKeyIndexToNote : function(index) {
+        return this.BASE_NOTE_INDEX + 2 * index + 1 - this.numberOfSkippedBlackKeys(index);  
+    },
 	PlayKeys: function(frame){
 	    var pointableOutput = document.getElementById("result");
 	    var pointableString = "";
 
 	    var keyList = this.getAllTouchedKeys(frame);
 	    for (var i = 0; i < keyList.length; i++) {
-            if (keyList[i].getVelocity() < 0.3 && keyList[i].getVelocity() > 0) {
-			    piano.noteOn(0, this.BASE_NOTE_INDEX + keyList[i].getKeyIndex(), (keyList[i].getVelocity() * 3.3) * 127, 0);
+            if (keyList[i].getVelocity() < 0.5 && keyList[i].getVelocity() > 0) {
+                if (keyList[i].isWhite()) {
+			        piano.noteOn(0, this.whiteKeyIndexToNote(keyList[i].getKeyIndex()), (keyList[i].getVelocity() * 2) * 127, 0);
+                } else {
+                    piano.noteOn(0, this.blackKeyIndexToNote(keyList[i].getKeyIndex()), (keyList[i].getVelocity() * 2) * 127, 0);
+                }
             }
 	    }	
 	}
