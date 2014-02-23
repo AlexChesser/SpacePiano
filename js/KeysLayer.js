@@ -44,7 +44,11 @@ var KeysLayer = {
                     resultList.push(key);
                 }
             }
+            
+            var mouseEvent = { clientX: $(window).width() * normalizedPosition[0], clientY: $(window).height() * normalizedPosition[2] };
+            onDocumentMouseMove(mouseEvent);
         }
+        
         return resultList;
     },
 	findKey : function(pos) {
