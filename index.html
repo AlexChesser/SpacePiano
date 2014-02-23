@@ -11,15 +11,9 @@
 		<style>
 html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 #leap-overlay { position: fixed; top: 0; left: 0;}
+#loading_wrap {background: #ffffff; width: 100%; height: 100%; margin: 0 auto; vertical-align: middle; text-align: center;}
+#loading_wrap img {position: absolute; top: 50%; left: 50%; margin-top: -256px; margin-left: -256px;}
 </style>
-<script>
-	
-
-	
-</script>
-
-
-
 		<!--  Stolen wholesale from the MIDI.js demo-Basic.html file -->
 	    	<script src="./js/MIDI/AudioDetect.js" type="text/javascript"></script>
 	    	<script src="./js/MIDI/LoadPlugin.js" type="text/javascript"></script>
@@ -40,6 +34,13 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 		
     </head>
     <body>
+    	<div id="loading_wrap">
+    		<img src="images/loader.gif">
+    	</div>
+
+		<!-- How do I know which instrument is which number? 
+			https://en.wikipedia.org/wiki/General_MIDI
+		-->
 		<select id="instrument" name="inst" style="position: absolute" onchange="changeInstrument()">
 			<option value="21">accordion</option>
 			<option value="32">acoustic_bass</option>
@@ -96,7 +97,7 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 			<option value="22">harmonica</option>
 			<option value="6">harpsichord</option>
 			<option value="125">helicopter</option>
-			<option value="3">honky-tonk_piano</option>
+			<option value="3">honkytonk_piano</option>
 			<option value="108">kalimba</option>
 			<option value="107">koto</option>
 			<option value="80">lead_1_square</option>
@@ -170,6 +171,7 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 			<option value="115">woodblock</option>
 			<option value="13">xylophone</option>
 		</select>
+		
 		<div style="display:none;">
 			<canvas id="leap-overlay"></canvas>
 			<div id="p-wrapper">
@@ -193,8 +195,10 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 		</div>	
 		<div id="result"></div>
 <script>
-
-
+function loadLayout(){
+	$('#loading_wrap').hide();
+	console.log(piano.noteToKey);
+}
 // listen to Leap Motion
 </script>
     </body>
