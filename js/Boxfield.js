@@ -1,5 +1,5 @@
 var BoxField = function(){ 
-		var size = 10, res = 32, sizeres = size * res, halfsizeres = sizeres / 2;
+		var size = 10, res = 50, sizeres = size * res, halfsizeres = sizeres / 2;
 			var buffer1 = [], buffer2 = [], temp;
 			var grid = [], plane;
 			var scene, camera, light, renderer;
