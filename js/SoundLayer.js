@@ -9,7 +9,7 @@ window.onload = function(){
 			MIDI.setVolume(0, 255);
 			controller.on('frame', function(frame) {
 			  currentframe++;
-		      if(currentframe % 5 == 0)
+		      if(currentframe % 5 == 0){
 					currentframe = 0;
 					KeysLayer.PlayKeys(frame)
 			  }
