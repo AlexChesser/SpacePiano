@@ -143,21 +143,18 @@ var InitDropdown = function (id, init){
 	}	
 }
 
-var changeInstrument = function(inst){
+var changeInstrument = function(){
 	MIDI.loadPlugin({
 		soundfontUrl: "./midi-js-soundfonts/FluidR3_GM/",
 		instrument: $("select.instrumentselect.active option:selected").text(),
 		callback: function() {
 			window.piano = MIDI;
-			if(inst == undefined){
-				inst = "#instrument_1"
-				
-			}
+
 			// actually, now that we're using up to 14 pointers, maybe we need to 
 			// update all channels when we change the instrument.
 			// unless we actually want to have a mix of instruments .. ooooh
 			for(var i = 0; i < 14; i++) {
-				piano.programChange(i,  $(inst +" option:selected").val());
+				piano.programChange(i,  $("select.instrumentselect.active option:selected").val());
 			}
 			FedbackLayer.init();
 			window.controller = new Leap.Controller();
