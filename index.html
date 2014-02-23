@@ -42,8 +42,8 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0}
 			https://en.wikipedia.org/wiki/General_MIDI
 		-->
 		<div style="position: absolute">
-		<select id="instrument_1" name="inst" onchange="changeInstrument()"></select>
-		<select id="instrument_2" name="inst"></select>
+		<select id="instrument_1" onchange="changeInstrument()" class="instrumentselect active"></select>
+		<select id="instrument_2" class="instrumentselect" ></select>
 		<input id="playspeed" type="text" value="15">
 	</div>	
 	<div id="result"></div>
@@ -52,6 +52,20 @@ function loadLayout(){
 	$('#loading_wrap').hide();
 }
 $(document).on('keyup', function(e){
+	var swapCurrentInstrument = function(direction){
+		// direction in case we set this to 4 instruments
+		var current = $("select.instrumentselect.active")
+		current.removeClass("active")
+		console.log(current[0].id)
+		if(current[0].id == "instrument_1"){
+			$("#instrument_2").addClass("active");
+			changeInstrument("#instrument_2");
+		} else {
+			$("#instrument_1").addClass("active");
+			changeInstrument("#instrument_1");			
+		}
+		
+	}
 	var code = e.keyCode || e.which;
 	console.log(code);
 	var s = parseInt($("#playspeed").val());
@@ -75,12 +89,13 @@ $(document).on('keyup', function(e){
 			}
 			break;
 		case 39:
-			
+			// left
+			swapCurrentInstrument(1)
 			 
 			break;
 		case 37: 
-			// right
-			
+			// rights
+			swapCurrentInstrument(-1)			
 		default:
 			// nothing
 		
