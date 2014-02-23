@@ -71,11 +71,15 @@ var KeysLayer = {
 
 	    var keyList = this.getAllTouchedKeys(frame);
 	    for (var i = 0; i < keyList.length; i++) {
+			
+			//piano.noteOn(0, 21+(Math.round(keyList[i].getKeyIndex()*100)), (1 - keyList[i].getHeight()) * 127, 0);
+
             if (keyList[i].isWhite()) {
 			    piano.noteOn(0, this.whiteKeyIndexToNote(keyList[i].getKeyIndex()), (1 - keyList[i].getHeight()) * 127, 0);
             } else {
                 piano.noteOn(0, this.blackKeyIndexToNote(keyList[i].getKeyIndex()), (1 - keyList[i].getHeight()) * 127, 0);
             }
+
 	    }	
 	}
 }

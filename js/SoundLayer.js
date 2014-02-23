@@ -1,9 +1,10 @@
 window.onload = function(){
 	MIDI.loadPlugin({
 		soundfontUrl: "./midi-js-soundfonts/FluidR3_GM/",
-		instrument: "acoustic_grand_piano",
+		instrument: "fx_7_echoes",
 		callback: function() {
 			window.piano = MIDI;
+			piano.programChange(0, 102);
 			FedbackLayer.init();
 			window.controller = new Leap.Controller();
 			var currentframe = 0;
