@@ -1,4 +1,4 @@
-var size = 10, res = 50, sizeres = size * res, halfsizeres = sizeres / 2;
+var size = 10, res = 32, sizeres = size * res, halfsizeres = sizeres / 2;
 var buffer1 = [], buffer2 = [], temp;
 var grid = [], plane;
 var scene, camera, light, renderer;
@@ -14,204 +14,200 @@ function onDocumentMouseMove( event ) {
 	ray.direction.subSelf( camera.position ).normalize();
 
 	intersects = ray.intersectObject( plane );
-
 }
 
-var BoxField = function(){ 
-		
+var BoxField = function () {
+    if (Detector.webgl) {
 
-			if ( Detector.webgl ) {
+        init();
+        animate();
 
-				init();
-				animate();
+    } else {
+        document.body.appendChild(Detector.getWebGLErrorMessage());
+    }
 
-			} else {
+    function init() {
 
-				document.body.appendChild( Detector.getWebGLErrorMessage() );
+        var container = document.createElement('div');
+        document.body.appendChild(container);
 
-			}
+        stats = new Stats();
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.top = '0px';
+        //container.appendChild( stats.domElement );
 
-			function init() {
+        for (var i = 0, l = res * res; i < l; i++) {
 
-				var container = document.createElement( 'div' );
-				document.body.appendChild( container );
+            buffer1[i] = 0;
+            buffer2[i] = 0;
 
-				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
-				stats.domElement.style.top = '0px';
-				// container.appendChild( stats.domElement );
+        }
 
-				for ( var i = 0, l = res * res; i < l; i ++ ) {
+        scene = new THREE.Scene();
 
-					buffer1[ i ] = 0;
-					buffer2[ i ] = 0;
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
+        camera.position.x = 150;
+        camera.position.y = 150;
+        camera.position.z = 100; //100 + sizeres;
+        camera.lookAt(new THREE.Vector3(halfsizeres, -50, halfsizeres));
+        scene.add(camera);
 
-				}
+        scene.add(new THREE.AmbientLight(0x808080));
 
-				scene = new THREE.Scene();
+        light = new THREE.SpotLight(0xFFFFFF, 1.25);
+        light.position.set(-500, 900, 600);
+        light.target.position.set(halfsizeres, 0, halfsizeres);
+        light.castShadow = true;
 
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.x = 150;
-				camera.position.y = 150;
-				camera.position.z = 100;//100 + sizeres;
-				camera.lookAt( new THREE.Vector3( halfsizeres, - 50, halfsizeres ) );
-				scene.add( camera );
+        scene.add(light);
 
-				scene.add( new THREE.AmbientLight( 0x808080 ) );
+        var light2 = new THREE.DirectionalLight(0x0000FF, 2.5);
+        light2.position.set(250, 250, 100);
 
-				light = new THREE.SpotLight( 0xffffff, 1.25 );
-				light.position.set( - 500, 900, 600 );
-				light.target.position.set( halfsizeres, 0, halfsizeres );
-				light.castShadow = true;
-				scene.add( light );
+        scene.add(light2);
 
-				geometry = new THREE.CubeGeometry( size, size, size );
-				geometry.applyMatrix( new THREE.Matrix4().setTranslation( 0, size / 2, 0 ) );
-				material = new THREE.MeshLambertMaterial( { color: 0xd0d0d0 } );
+        var light3 = new THREE.DirectionalLight(0xFF0000, 2.5);
+        light3.position.set(-250, -250, 100);
+        scene.add(light3);
 
-				for ( var i = 0, l = res * res; i < l; i ++ ) {
+        geometry = new THREE.CubeGeometry(size, size, size);
+        geometry.applyMatrix(new THREE.Matrix4().setTranslation(0, size / 2, 0));
+        material = new THREE.MeshLambertMaterial({ color: 0xD0D0D0 });
 
-					cube = new THREE.Mesh( geometry, material );
-					cube.position.x = size + ( ( i % res ) * 10 );
-					cube.position.z = size + ( Math.floor( i / res ) * 10 );
-					cube.castShadow = true;
-					cube.receiveShadow = true;
-					scene.add( cube );
+        for (var i = 0, l = res * res; i < l; i++) {
 
-					grid.push( cube );
+            cube = new THREE.Mesh(geometry, material);
+            cube.position.x = size + ((i % res) * 10);
+            cube.position.z = size + (Math.floor(i / res) * 10);
+            cube.castShadow = true;
+            cube.receiveShadow = true;
+            scene.add(cube);
 
-				}
+            grid.push(cube);
 
-				geometry = new THREE.PlaneGeometry( sizeres, sizeres );
+        }
 
-				plane = new THREE.Mesh( geometry, material );
-				plane.position.x = halfsizeres;
-				plane.position.z = halfsizeres;
-				plane.rotation.x = - 90 * Math.PI / 180;
-				plane.visible = false;
-				scene.add( plane );
+        geometry = new THREE.PlaneGeometry(sizeres, sizeres);
 
-				renderer = new THREE.WebGLRenderer();
+        plane = new THREE.Mesh(geometry, material);
+        plane.position.x = halfsizeres;
+        plane.position.z = halfsizeres;
+        plane.rotation.x = -90 * Math.PI / 180;
+        plane.visible = false;
+        scene.add(plane);
 
-				renderer.shadowMapEnabled = true;
-				renderer.shadowMapSoft = true;
+        renderer = new THREE.WebGLRenderer();
 
-				renderer.shadowCameraNear = 3;
-				renderer.shadowCameraFar = camera.far;
-				renderer.shadowCameraFov = 50;
+        renderer.shadowMapEnabled = true;
+        renderer.shadowMapSoft = true;
 
-				renderer.shadowMapBias = 0.0039;
-				renderer.shadowMapDarkness = 0.5;
-				renderer.shadowMapWidth = 512;
-				renderer.shadowMapHeight = 512;
+        renderer.shadowCameraNear = 3;
+        renderer.shadowCameraFar = camera.far;
+        renderer.shadowCameraFov = 50;
 
-				var devicePixelRatio = window.devicePixelRatio || 1;
+        renderer.shadowMapBias = 0.0039;
+        renderer.shadowMapDarkness = 0.5;
+        renderer.shadowMapWidth = 512;
+        renderer.shadowMapHeight = 512;
 
-				renderer.setSize( window.innerWidth * devicePixelRatio, window.innerHeight * devicePixelRatio );
-				renderer.domElement.style.width = window.innerWidth + 'px';
-				renderer.domElement.style.height = window.innerHeight + 'px';
+        var devicePixelRatio = window.devicePixelRatio || 1;
 
-				container.appendChild( renderer.domElement );
+        renderer.setSize(window.innerWidth * devicePixelRatio, window.innerHeight * devicePixelRatio);
+        renderer.domElement.style.width = window.innerWidth + 'px';
+        renderer.domElement.style.height = window.innerHeight + 'px';
 
-				mouse = new THREE.Vector3( 0, 0, 1 );
-				projector = new THREE.Projector();
-				ray = new THREE.Ray( camera.position );
+        container.appendChild(renderer.domElement);
 
-				//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        mouse = new THREE.Vector3(0, 0, 1);
+        projector = new THREE.Projector();
+        ray = new THREE.Ray(camera.position);
 
-			}
+        //document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+    }
 
-			
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
 
-			function animate() {
+    function render() {
+        if (intersects.length) {
+            var point = intersects[0].point;
+            var x = Math.floor(point.x / size);
+            var y = Math.floor(point.z / size);
 
-				requestAnimationFrame( animate );
+            buffer1[x + y * res] = 10;
+        }
 
-				render();
-				stats.update();
+        var bottom = res * res - res;
 
-			}
+        // update buffers
+        for (var i = 0, l = res * res; i < l; i++) {
 
-			function render() {
+            var x1, x2, y1, y2;
 
-				if ( intersects.length ) {
+            if (i % res == 0) {
 
-					var point = intersects[ 0 ].point;
-					var x = Math.floor( point.x / size );
-					var y = Math.floor( point.z / size );
+                // left edge
 
-					buffer1[ x + y * res ] = 10;
+                x1 = 0;
+                x2 = buffer1[i + 1];
 
-				}
+            } else if (i % res == res - 1) {
 
-				var bottom = res * res - res;
+                // right edge
 
-				// update buffers
-				for ( var i = 0, l = res * res; i < l; i ++ ) {
+                x1 = buffer1[i - 1];
+                x2 = 0;
 
-					var x1, x2, y1, y2;
+            } else {
 
-					if ( i % res == 0 ) {
+                x1 = buffer1[i - 1];
+                x2 = buffer1[i + 1];
 
-						// left edge
+            }
 
-						x1 = 0;
-						x2 = buffer1[ i + 1 ];
+            if (i < res) {
 
-					} else if ( i % res == res - 1 ) {
+                // top edge
 
-						// right edge
+                y1 = 0;
+                y2 = buffer1[i + res];
 
-						x1 = buffer1[ i - 1 ];
-						x2 = 0;
+            } else if (i > l - res - 1) {
 
-					} else {
+                // bottom edge
 
-						x1 = buffer1[ i - 1 ];
-						x2 = buffer1[ i + 1 ];
+                y1 = buffer1[i - res];
+                y2 = 0;
 
-					}
+            } else {
 
-					if ( i < res ) {
+                y1 = buffer1[i - res];
+                y2 = buffer1[i + res];
 
-						// top edge
+            }
 
-						y1 = 0;
-						y2 = buffer1[ i + res ];
+            buffer2[i] = (x1 + x2 + y1 + y2) / 1.9 - buffer2[i];
+            buffer2[i] -= buffer2[i] / 10;
 
-					} else if ( i > l - res - 1 ) {
+        }
 
-						// bottom edge
+        temp = buffer1;
+        buffer1 = buffer2;
+        buffer2 = temp;
 
-						y1 = buffer1[ i - res ];
-						y2 = 0;
+        // update grid
 
-					} else {
+        for (var i = 0, l = res * res; i < l; i++) {
 
-						y1 = buffer1[ i - res ];
-						y2 = buffer1[ i + res ];
+            grid[i].scale.y += (Math.max(0.1, 0.1 + buffer2[i]) - grid[i].scale.y) * 0.1;
 
-					}
+        }
 
-					buffer2[ i ] = ( x1 + x2 + y1 + y2 ) / 1.9 - buffer2[ i ];
-					buffer2[ i ] -= buffer2[ i ] / 10;
+        renderer.render(scene, camera);
 
-				}
-
-				temp = buffer1;
-				buffer1 = buffer2;
-				buffer2 = temp;
-
-				// update grid
-
-				for ( var i = 0, l = res * res; i < l; i ++ ) {
-
-					grid[ i ].scale.y += ( Math.max( 0.1, 0.1 + buffer2[ i ] ) - grid[ i ].scale.y ) * 0.1;
-
-				}
-
-				renderer.render( scene, camera );
-
-			}
-		}
+    }
+}
 		
