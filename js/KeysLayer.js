@@ -21,7 +21,7 @@ function KeyTouch(isWhite, keyIndex, velocity) {
 var KeysLayer = {
 	WHITEKEY_NUMBER : 14,
     OVERALL_BORDER : 0.02,
-    BASE_NOTE_INDEX: 40,
+    BASE_NOTE_INDEX: 60,
     KEY_WIDTH : function() {
             return (1 - 2 * this.OVERALL_BORDER) / this.WHITEKEY_NUMBER;
         },
@@ -47,12 +47,12 @@ var KeysLayer = {
 	findKey : function(pos) {
         var xIndex = Math.floor((pos[0] - this.OVERALL_BORDER) / this.KEY_WIDTH());
         if (pos[2] > 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER) {
-            return new this.KeyTouch(true, xIndex, 0);
+            return new KeyTouch(true, xIndex, 0);
         }
 
         if (pos[2] < 0.5 && xIndex >= 0 && xIndex < this.WHITEKEY_NUMBER
               && xIndex % 7 != 2 && xIndex % 7 != 6) {
-            return new this.KeyTouch(false, xIndex, 0);
+            return new KeyTouch(false, xIndex, 0);
         }
     },
 	PlayKeys: function(frame){
