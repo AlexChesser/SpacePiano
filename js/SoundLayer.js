@@ -18,4 +18,5 @@ window.onload = function(){
 			window.controller.connect();
 		}
 	})
+	BoxField();
 }
