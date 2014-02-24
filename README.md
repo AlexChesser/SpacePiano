@@ -17,8 +17,13 @@ TO RUN:
 
 first initialize the submodules
 
-git submodule init
-git submodule update
+    git submodule init
+    git submodule update
+
+
+then 
+
+    host the site on a local web browser
 
 
 
